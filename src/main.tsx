@@ -5,6 +5,7 @@ import { CSSvariables } from './styles/CSSvariables'
 import { GlobalStyles } from './styles/GlobalStyles'
 import { ResetCSS } from './styles/ResetCSS'
 
+//Chromatic pls work uwu
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 	<React.StrictMode>
 		<ResetCSS />
