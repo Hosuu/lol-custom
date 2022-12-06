@@ -12,6 +12,6 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   :root{
-    font-family: 'Comfortaa', cursive;
+    font-family: 'Comfortaa', sans-serif;
   }
 `
