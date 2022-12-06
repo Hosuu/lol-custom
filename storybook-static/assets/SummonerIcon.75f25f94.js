@@ -1,0 +1,4 @@
+var m=Object.defineProperty;var e=(o,r)=>m(o,"name",{value:r,configurable:!0});import{H as c}from"./styled-components.browser.esm.774284e6.js";import{j as t}from"./jsx-runtime.6f1b4a9a.js";const s=c.img`
+	height: 100%;
+`,n=e(({iconId:o})=>t(s,{src:`http://ddragon.leagueoflegends.com/cdn/12.22.1/img/profileicon/${o}.png`}),"SummonerIcon");try{n.displayName="SummonerIcon",n.__docgenInfo={description:"",displayName:"SummonerIcon",props:{iconId:{defaultValue:null,description:"",name:"iconId",required:!0,type:{name:"number"}}}},typeof STORYBOOK_REACT_CLASSES<"u"&&(STORYBOOK_REACT_CLASSES["src/components/Utils/SummonerIcon.tsx#SummonerIcon"]={docgenInfo:n.__docgenInfo,name:"SummonerIcon",path:"src/components/Utils/SummonerIcon.tsx#SummonerIcon"})}catch{}export{n as S};
+//# sourceMappingURL=SummonerIcon.75f25f94.js.map
