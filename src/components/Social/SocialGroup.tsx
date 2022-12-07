@@ -2,9 +2,11 @@ import { FC, useState } from 'react'
 import { MdArrowBackIosNew } from 'react-icons/md'
 import styled from 'styled-components'
 import { SummonerData } from '../../API/interfaces'
+import { Droppable } from '../DragAndDrop/Droppable'
 import { SocialMember } from './SocialMember'
 
 interface SocialGroupProps {
+	id: number
 	name: string
 	summoners: SummonerData[]
 }
@@ -68,29 +70,37 @@ const SocialGroupLabel = styled.div`
 	}
 `
 
-export const SocialGroup: FC<SocialGroupProps> = ({ name, summoners }) => {
+export const SocialGroup: FC<SocialGroupProps> = ({ id, name, summoners }) => {
 	const [isOpen, setIsOpen] = useState(true)
 
 	return (
-		<SocialGroupWrapper>
-			<SocialGroupLabel
-				onClick={() => {
-					setIsOpen((v) => !v)
-				}}>
-				<p title={name}>{name}</p>
-				<p>
-					({summoners.filter((s) => s.status < 3).length}/{summoners.length})
-				</p>
-				<MdArrowBackIosNew size={'1em'} style={{ rotate: `${-90 * Number(isOpen)}deg` }} />
-			</SocialGroupLabel>
-			<SocialMembersWrapper isOpen={isOpen} members={summoners.length}>
-				{summoners
-					.sort((a, b) => a.summonerName.localeCompare(b.summonerName))
-					.sort((a, b) => a.status - b.status)
-					.map((s) => (
-						<SocialMember summonerData={s} key={s.summonerId} />
-					))}
-			</SocialMembersWrapper>
-		</SocialGroupWrapper>
+		<Droppable
+			onDropAction={({ summonerName, groupId }) => {
+				if (groupId != id) console.log(`"${summonerName}" dropped on folder "${name}"`)
+			}}>
+			<SocialGroupWrapper>
+				<SocialGroupLabel
+					onClick={() => {
+						setIsOpen((v) => !v)
+					}}>
+					<p title={name}>{name}</p>
+					<p>
+						({summoners.filter((s) => s.status < 3).length}/{summoners.length})
+					</p>
+					<MdArrowBackIosNew
+						size={'1em'}
+						style={{ rotate: `${-90 * Number(isOpen)}deg` }}
+					/>
+				</SocialGroupLabel>
+				<SocialMembersWrapper isOpen={isOpen} members={summoners.length}>
+					{summoners
+						.sort((a, b) => a.summonerName.localeCompare(b.summonerName))
+						.sort((a, b) => a.status - b.status)
+						.map((s) => (
+							<SocialMember summonerData={s} key={s.summonerId} />
+						))}
+				</SocialMembersWrapper>
+			</SocialGroupWrapper>
+		</Droppable>
 	)
 }

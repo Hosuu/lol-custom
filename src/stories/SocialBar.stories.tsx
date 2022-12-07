@@ -1,5 +1,6 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { SocialBar } from '../components/Social/SocialBar'
+import { summonersData } from './mockupData'
 
 export default {
 	title: 'SocialBar',
@@ -9,4 +10,6 @@ export default {
 const Template: ComponentStory<typeof SocialBar> = (args) => <SocialBar {...args} />
 
 export const Default = Template.bind({})
-Default.args = {}
+Default.args = {
+	summonersData: summonersData,
+}

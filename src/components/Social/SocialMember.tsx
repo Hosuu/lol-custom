@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { MdMarkChatUnread } from 'react-icons/md'
 import styled, { css } from 'styled-components'
 import { SocialStatus, SummonerData } from '../../API/interfaces'
+import { Draggable } from '../DragAndDrop/Draggable'
 import { SummonerIcon } from '../Utils/SummonerIcon'
 
 interface SocialMemberProps {
@@ -108,6 +109,8 @@ export const SocialMember: FC<SocialMemberProps> = ({
 		status,
 		unreadedMessage,
 		statusPayload,
+		summonerId,
+		groupId,
 	},
 }) => {
 	const parsedStatusMessage =
@@ -117,17 +120,19 @@ export const SocialMember: FC<SocialMemberProps> = ({
 			: statusPayload?.statusOverride
 
 	return (
-		<SocialMemberWrapper>
-			<AvatarWrapper status={status}>
-				<SummonerIcon iconId={summonerIconId} />
-			</AvatarWrapper>
-			<TextsWrapper>
-				<SummonerName children={summonerName} />
-				<StatusMessage children={parsedStatusMessage} status={status} />
-			</TextsWrapper>
-			{unreadedMessage && (
-				<MdMarkChatUnread size='24px' color='#ccc' style={{ flexShrink: 0 }} />
-			)}
-		</SocialMemberWrapper>
+		<Draggable dragData={JSON.stringify({ summonerName, groupId })}>
+			<SocialMemberWrapper>
+				<AvatarWrapper status={status}>
+					<SummonerIcon iconId={summonerIconId} />
+				</AvatarWrapper>
+				<TextsWrapper>
+					<SummonerName children={summonerName} />
+					<StatusMessage children={parsedStatusMessage} status={status} />
+				</TextsWrapper>
+				{unreadedMessage && (
+					<MdMarkChatUnread size='24px' color='#ccc' style={{ flexShrink: 0 }} />
+				)}
+			</SocialMemberWrapper>
+		</Draggable>
 	)
 }

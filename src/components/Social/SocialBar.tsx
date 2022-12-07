@@ -1,10 +1,13 @@
 import { FC, useEffect, useState } from 'react'
 import { MdClose, MdGroupAdd, MdLibraryAdd, MdManageSearch } from 'react-icons/md'
 import styled from 'styled-components'
-import { SocialStatus, SummonerData } from '../../API/interfaces'
+import { SummonerData } from '../../API/interfaces'
+import { Droppable } from '../DragAndDrop/Droppable'
 import { SocialGroup } from './SocialGroup'
 
-interface SocialBarProps {}
+interface SocialBarProps {
+	summonersData: SummonerData[]
+}
 
 const SocialBarWrapper = styled.div`
 	width: 256px;
@@ -28,6 +31,9 @@ const ProfileWrapper = styled.div`
 	width: 100%;
 	overflow: hidden;
 	border-bottom: 1px solid #333;
+	color: #fff;
+	display: grid;
+	place-items: center;
 `
 
 const FriendsListLabel = styled.div`
@@ -105,162 +111,24 @@ const FriendListWrapper = styled.div`
 
 const socialGroups = ['General', 'Chuje', 'Dziwki', 'Szmaty']
 
-const summonersData: SummonerData[] = [
-	{
-		summonerName: 'Dobry mudzin',
-		summonerIconId: 5180,
-		groupId: 0,
-		status: SocialStatus.Online,
-		statusMessage: '',
-		summonerId: 'mudzin1',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'GG I quit',
-		summonerIconId: 29,
-		groupId: 0,
-		status: SocialStatus.Offline,
-		statusMessage: '',
-		summonerId: 'mudzin5',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'GigaCweluch',
-		summonerIconId: 542,
-		groupId: 1,
-		status: SocialStatus.Offline,
-		statusMessage: 'Jestem cwelem',
-		summonerId: 'mudzin25',
-		summonerLevel: 69,
-		unreadedMessage: true,
-	},
-	{
-		summonerName: 'LittleMati',
-		summonerIconId: 534,
-		groupId: 1,
-		status: SocialStatus.Dnd,
-		statusPayload: {
-			statusOverride: 'In game (Ranked SR)',
-			timeStamp: Date.now(),
-		},
-		statusMessage: 'Rammus enjoyer 😎',
-		summonerId: 'kox',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'ARAMslut1',
-		summonerIconId: 51,
-		groupId: 3,
-		status: SocialStatus.Dnd,
-		statusPayload: {
-			statusOverride: 'In Game (ARAM)',
-			timeStamp: Date.now(),
-		},
-		statusMessage: 'ARAMy dla podludzi',
-		summonerId: 'ARAMslut1',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'ARAMslut2',
-		summonerIconId: 60,
-		groupId: 3,
-		status: SocialStatus.Dnd,
-		statusPayload: {
-			statusOverride: 'In Queue',
-			timeStamp: Date.now(),
-		},
-		statusMessage: 'ARAMy dla podludzi',
-		summonerId: 'ARAMslut2',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'Jeszcze jedna szmata',
-		summonerIconId: 55,
-		groupId: 3,
-		status: SocialStatus.Online,
-		statusMessage: 'zeby scroll testowac',
-		summonerId: 'ARAMslut2123',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'ARAMslut3',
-		summonerIconId: 71,
-		groupId: 3,
-		status: SocialStatus.Online,
-		statusPayload: {
-			statusOverride: 'I tak sie nie wyswietli wiec chuj w to :)',
-			timeStamp: Date.now(),
-		},
-		statusMessage: 'ARAMy dla podludzi',
-		summonerId: 'ARAMslut3',
-		summonerLevel: 69,
-		unreadedMessage: true,
-	},
-	{
-		summonerName: '???',
-		summonerIconId: 5180,
-		groupId: 0,
-		status: SocialStatus.Away,
-		statusMessage: '',
-		summonerId: 'mudzin2',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'Izabela Łęcka',
-		summonerIconId: 4796,
-		groupId: 2,
-		status: SocialStatus.Online,
-		statusMessage: 'WOKULSKI WRÓĆ 🥺',
-		summonerId: 'LECKAXD',
-		summonerLevel: 69,
-		unreadedMessage: true,
-	},
-	{
-		summonerName: 'KotoDziwka',
-		summonerIconId: 3795,
-		groupId: 2,
-		status: SocialStatus.Online,
-		statusMessage: 'Jestem kurwą',
-		summonerId: 'KOTODZIWKA-1',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-	{
-		summonerName: 'KotoDziwka2',
-		summonerIconId: 4655,
-		groupId: 2,
-		status: SocialStatus.Dnd,
-		statusPayload: {
-			statusOverride: 'In Champion Select',
-			timeStamp: Date.now(),
-		},
-		statusMessage: 'Jestem kurwą i szmatą',
-		summonerId: 'KOTODZIWKA-2',
-		summonerLevel: 69,
-		unreadedMessage: false,
-	},
-]
-
-export const SocialBar: FC<SocialBarProps> = ({}) => {
+export const SocialBar: FC<SocialBarProps> = ({ summonersData }) => {
 	const [filter, setFilter] = useState<string>('')
-	const [summoners, setSummoners] = useState<SummonerData[]>([])
+	const [filtredSummoners, setFiltredSummoners] = useState<SummonerData[]>([])
 
 	useEffect(() => {
-		setSummoners(
+		setFiltredSummoners(
 			summonersData.filter((s) => s.summonerName.toLowerCase().includes(filter.toLowerCase()))
 		)
-	}, [filter])
+	}, [filter, summonersData])
 
 	return (
 		<SocialBarWrapper>
-			<ProfileWrapper></ProfileWrapper>
+			<Droppable
+				onDropAction={({ summonerName, groupId }) =>
+					console.log(`"${summonerName}" has been invited to your current game lobby`)
+				}>
+				<ProfileWrapper>GAME INVITE SPOT</ProfileWrapper>
+			</Droppable>
 			<FriendsListLabel>
 				<p>Friends</p>
 				<MdGroupAdd size={18} />
@@ -291,7 +159,8 @@ export const SocialBar: FC<SocialBarProps> = ({}) => {
 					<SocialGroup
 						name={g}
 						key={i}
-						summoners={summoners.filter((s) => s.groupId === i)}
+						id={i}
+						summoners={filtredSummoners.filter((s) => s.groupId === i)}
 					/>
 				))}
 			</FriendListWrapper>
