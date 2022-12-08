@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { MdMarkChatUnread } from 'react-icons/md'
 import styled, { css } from 'styled-components'
 import { SocialStatus, SummonerData } from '../../API/interfaces'
+import { useContextMenu } from '../../contexts/ContextMenuContext'
 import { Draggable } from '../DragAndDrop/Draggable'
 import { SummonerIcon } from '../Utils/SummonerIcon'
 
@@ -119,9 +120,73 @@ export const SocialMember: FC<SocialMemberProps> = ({
 			  SocialStatus[status]
 			: statusPayload?.statusOverride
 
+	const contextMenuHandler = useContextMenu([
+		{
+			label: 'Invite to game',
+			type: 'disabled',
+			action() {
+				console.log(summonerName, ' => Invite to game')
+			},
+		},
+		{
+			label: 'Send Message',
+			type: 'normal',
+			action() {
+				console.log(summonerName, ' => Send Message')
+			},
+		},
+		{
+			label: 'Spectate Game',
+			type: 'disabled',
+			action() {
+				console.log(summonerName, ' => Spectate Game')
+			},
+		},
+		{
+			label: 'View Profile',
+			type: 'normal',
+			action() {
+				console.log(summonerName, ' => View Profile')
+			},
+		},
+		{
+			label: 'Give Gift',
+			type: 'normal',
+			action() {
+				console.log(summonerName, ' => Give Gift')
+			},
+		},
+		{
+			label: 'Add Note',
+			type: 'normal',
+			action() {
+				console.log(summonerName, ' => Add Note')
+			},
+		},
+		{
+			label: '',
+			type: 'separator',
+			action: () => null,
+		},
+		{
+			label: 'Unfriend',
+			type: 'danger',
+			action() {
+				console.log(summonerName, ' => Unfriend')
+			},
+		},
+		{
+			label: 'Block',
+			type: 'danger',
+			action() {
+				console.log(summonerName, ' => Block')
+			},
+		},
+	])
+
 	return (
 		<Draggable dragData={JSON.stringify({ summonerName, groupId })}>
-			<SocialMemberWrapper>
+			<SocialMemberWrapper onContextMenu={contextMenuHandler}>
 				<AvatarWrapper status={status}>
 					<SummonerIcon iconId={summonerIconId} />
 				</AvatarWrapper>

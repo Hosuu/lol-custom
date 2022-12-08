@@ -1,9 +1,10 @@
 import { FC, useEffect, useState } from 'react'
-import { MdClose, MdGroupAdd, MdLibraryAdd, MdManageSearch } from 'react-icons/md'
+import { MdGroupAdd, MdLibraryAdd } from 'react-icons/md'
 import styled from 'styled-components'
 import { SummonerData } from '../../API/interfaces'
 import { Droppable } from '../DragAndDrop/Droppable'
 import { SocialGroup } from './SocialGroup'
+import { SocialSearchBar } from './SocialSearchBar'
 
 interface SocialBarProps {
 	summonersData: SummonerData[]
@@ -11,7 +12,7 @@ interface SocialBarProps {
 
 const SocialBarWrapper = styled.div`
 	width: 256px;
-	height: 680px;
+	height: 900px;
 
 	display: flex;
 	flex-direction: column;
@@ -57,42 +58,7 @@ const FriendsListLabel = styled.div`
 
 	& > svg {
 		flex-shrink: 0;
-	}
-`
-const FilterBarWrapper = styled.div`
-	width: calc(100% - 20px);
-	height: 32px;
-
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 8px;
-	overflow: hidden;
-
-	padding: 0px 8px;
-	border-radius: 16px;
-
-	background: #262626;
-
-	& > svg {
-		flex-shrink: 0;
-	}
-`
-const FilterBarInput = styled.input`
-	background: none;
-	outline: none;
-	border: none;
-
-	flex-grow: 1;
-	width: 0;
-
-	font-family: 'Comfortaa';
-	font-weight: 600;
-	font-size: 14px;
-	color: #aaa;
-
-	&::placeholder {
-		color: #666;
+		cursor: pointer;
 	}
 `
 
@@ -124,36 +90,20 @@ export const SocialBar: FC<SocialBarProps> = ({ summonersData }) => {
 	return (
 		<SocialBarWrapper>
 			<Droppable
-				onDropAction={({ summonerName, groupId }) =>
+				onDropAction={({ summonerName }) =>
 					console.log(`"${summonerName}" has been invited to your current game lobby`)
 				}>
 				<ProfileWrapper>GAME INVITE SPOT</ProfileWrapper>
 			</Droppable>
+
 			<FriendsListLabel>
 				<p>Friends</p>
-				<MdGroupAdd size={18} />
-				<MdLibraryAdd size={18} />
+				<MdGroupAdd size={'1.1em'} onClick={() => console.log('Create new folder')} />
+				<MdLibraryAdd size={'1.1em'} onClick={() => console.log('Add new Friend')} />
 			</FriendsListLabel>
-			<FilterBarWrapper>
-				<MdManageSearch size='24px' color={'#ccc'} />
-				<FilterBarInput
-					type='text'
-					onChange={(e) => setFilter(e.target.value)}
-					value={filter}
-					placeholder='Type to filter the list...'
-					maxLength={20}
-				/>
-				{filter && (
-					<MdClose
-						size='1em'
-						cursor={'pointer'}
-						color={'#ccc'}
-						onClick={() => {
-							setFilter('')
-						}}
-					/>
-				)}
-			</FilterBarWrapper>
+
+			<SocialSearchBar setFilter={setFilter} />
+
 			<FriendListWrapper>
 				{socialGroups.map((g, i) => (
 					<SocialGroup

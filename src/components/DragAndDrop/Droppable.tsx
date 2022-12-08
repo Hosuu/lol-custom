@@ -31,7 +31,7 @@ export const Droppable: FC<DroppableProps> = ({ children, onDropAction }) => {
 	return (
 		<div
 			ref={ref}
-			style={{ width: '100%' }}
+			style={{ width: 'inherit' }}
 			onDrop={dropHandler}
 			onDragOver={dragOverHandler}
 			// onDragEnter={dragEnterHandler}

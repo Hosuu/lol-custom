@@ -8,7 +8,7 @@ export default {
 
 const Template: ComponentStory<typeof SummonerIcon> = (args) => <SummonerIcon {...args} />
 
-export const Default = Template.bind({})
-Default.args = {
+export const CuteRammus = Template.bind({})
+CuteRammus.args = {
 	iconId: 57,
 }
